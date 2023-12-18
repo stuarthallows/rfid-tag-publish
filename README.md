@@ -1,5 +1,7 @@
-# React basic
+# RFID Tag Publish
 
-[Azure Static Web Apps](https://docs.microsoft.com/azure/static-web-apps/overview) allows you to easily build [React](https://reactjs.org/) apps in minutes. Use this repo with the [React quickstart](https://docs.microsoft.com/azure/static-web-apps/getting-started?tabs=react) to build and customize a new static site.
+[Azure Static Web Apps documentation](https://learn.microsoft.com/en-us/azure/static-web-apps/)
+[Static Web Apps CLI](https://azure.github.io/static-web-apps-cli/)
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## TODO
+- Add security to Functions

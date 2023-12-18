@@ -10,7 +10,7 @@ function App() {
       .catch(error => console.error('Error fetching data from api/TagScanned', error));
   }, []);
 
-  return <div>Hello {value}</div>;
+  return <div>{value} ;-)</div>;
 }
 
 export default App;
