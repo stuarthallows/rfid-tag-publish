@@ -38,7 +38,7 @@ namespace CSharp
         }
 
         [FunctionName("broadcast")]
-        public static async Task Broadcast([TimerTrigger("*/5 * * * * *")] TimerInfo myTimer,
+        public static async Task Broadcast([HttpTrigger(AuthorizationLevel.Anonymous, "get", "post", Route = null)] HttpRequest req,
                                             [SignalR(HubName = "serverless")] IAsyncCollector<SignalRMessage> signalRMessages)
         {
             var request = new HttpRequestMessage(HttpMethod.Get, "https://api.github.com/repos/azure/azure-signalr");
@@ -62,6 +62,32 @@ namespace CSharp
                     Arguments = new[] { $"Current star count of https://github.com/Azure/azure-signalr is: {StarCount}" }
                 });
         }
+
+        // [FunctionName("broadcastTimer")]
+        // public static async Task BroadcastTimer([TimerTrigger("*/5 * * * * *")] TimerInfo myTimer,
+        //                                     [SignalR(HubName = "serverless")] IAsyncCollector<SignalRMessage> signalRMessages)
+        // {
+        //     var request = new HttpRequestMessage(HttpMethod.Get, "https://api.github.com/repos/azure/azure-signalr");
+        //     request.Headers.UserAgent.ParseAdd("Serverless");
+        //     request.Headers.Add("If-None-Match", Etag);
+        //     var response = await httpClient.SendAsync(request);
+        //     if (response.Headers.Contains("Etag"))
+        //     {
+        //         Etag = response.Headers.GetValues("Etag").First();
+        //     }
+        //     if (response.StatusCode == System.Net.HttpStatusCode.OK)
+        //     {
+        //         var result = JsonConvert.DeserializeObject<GitResult>(await response.Content.ReadAsStringAsync());
+        //         StarCount = result.StarCount;
+        //     }
+
+        //     await signalRMessages.AddAsync(
+        //         new SignalRMessage
+        //         {
+        //             Target = "newMessage",
+        //             Arguments = new[] { $"Current star count of https://github.com/Azure/azure-signalr is: {StarCount}" }
+        //         });
+        // }
 
         private class GitResult
         {

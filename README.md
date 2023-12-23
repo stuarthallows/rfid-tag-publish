@@ -33,6 +33,9 @@ swa start build --api-location api
 3. Add Application Insights
 4. Add dependency to functions app - Microsoft.Azure.WebJobs.Extensions.SignalRService
 5. Add SignalR connection string to functions app - func settings add AzureSignalRConnectionString "CONN_STR"
+6. Add APPLICATIONINSIGHTS_CONNECTION_STRING setting to functions app
+
+
 
 
 
