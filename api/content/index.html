@@ -8,19 +8,33 @@
 <body>
   <h1>Azure SignalR Serverless Sample</h1>
   <div id="messages"></div>
+  <button id="broadcastButton">Broadcast</button>
+
   <script>
-    let messages = document.querySelector('#messages');
+    let messages = document.getElementById("messages");
     const apiBaseUrl = window.location.origin;
     const connection = new signalR.HubConnectionBuilder()
         .withUrl(apiBaseUrl + '/api')
         .configureLogging(signalR.LogLevel.Information)
         .build();
-      connection.on('newMessage', (message) => {
-        document.getElementById("messages").innerHTML = message;
+      connection.on('nextNumber', (message) => {
+        messages.innerHTML = message;
       });
 
       connection.start()
         .catch(console.error);
+
+      document.getElementById('broadcastButton').addEventListener('click', broadcast);
+
+      function broadcast() {
+        fetch(apiBaseUrl + '/api/broadcast', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        })
+        .catch(console.error);
+      }
   </script>
 </body>
 

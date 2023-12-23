@@ -14,10 +14,6 @@ namespace CSharp
 {
     public static class Function
     {
-        private static HttpClient httpClient = new HttpClient();
-        private static string Etag = string.Empty;
-        private static string StarCount = "0";
-
         [FunctionName("index")]
         public static IActionResult GetHomePage([HttpTrigger(AuthorizationLevel.Anonymous)]HttpRequest req, ExecutionContext context)
         {
@@ -41,25 +37,15 @@ namespace CSharp
         public static async Task Broadcast([HttpTrigger(AuthorizationLevel.Anonymous, "get", "post", Route = null)] HttpRequest req,
                                             [SignalR(HubName = "serverless")] IAsyncCollector<SignalRMessage> signalRMessages)
         {
-            var request = new HttpRequestMessage(HttpMethod.Get, "https://api.github.com/repos/azure/azure-signalr");
-            request.Headers.UserAgent.ParseAdd("Serverless");
-            request.Headers.Add("If-None-Match", Etag);
-            var response = await httpClient.SendAsync(request);
-            if (response.Headers.Contains("Etag"))
-            {
-                Etag = response.Headers.GetValues("Etag").First();
-            }
-            if (response.StatusCode == System.Net.HttpStatusCode.OK)
-            {
-                var result = JsonConvert.DeserializeObject<GitResult>(await response.Content.ReadAsStringAsync());
-                StarCount = result.StarCount;
-            }
+            Random random = new();
+
+            var nextNumber = random.Next(1, 1000000);
 
             await signalRMessages.AddAsync(
                 new SignalRMessage
                 {
-                    Target = "newMessage",
-                    Arguments = new[] { $"Current star count of https://github.com/Azure/azure-signalr is: {StarCount}" }
+                    Target = "nextNumber",
+                    Arguments = new[] { $"The next random number is: {nextNumber}" }
                 });
         }
 
@@ -88,12 +74,5 @@ namespace CSharp
         //             Arguments = new[] { $"Current star count of https://github.com/Azure/azure-signalr is: {StarCount}" }
         //         });
         // }
-
-        private class GitResult
-        {
-            [JsonRequired]
-            [JsonProperty("stargazers_count")]
-            public string StarCount { get; set; }
-        }
     }
 }
