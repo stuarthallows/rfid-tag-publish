@@ -27,5 +27,14 @@ Run the frontend app and API together by starting the app with the Static Web Ap
 swa start build --api-location api
 ```
 
+## Environment setup
+1. Create Azure Static Web App
+2. Add SignalR service
+3. Add Application Insights
+4. Add dependency to functions app - Microsoft.Azure.WebJobs.Extensions.SignalRService
+5. Add SignalR connection string to functions app - func settings add AzureSignalRConnectionString "CONN_STR"
+
+
+
 
 
