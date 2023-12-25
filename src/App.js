@@ -1,16 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
+import { useSignalRClient } from './SignalRClient';
 
 function App() {
-  const [value, setValue] = useState('');
+  var tagId = useSignalRClient();
 
-  useEffect(() => {
-    fetch('api/TagScanned?name=Stuart')
-      .then(response => response.text())
-      .then(data => setValue(data))
-      .catch(error => console.error('Error fetching data from api/TagScanned', error));
-  }, []);
-
-  return <div>{value} ;-\</div>;
+  return <div> Tag Id: {tagId}</div>;
 }
 
 export default App;
