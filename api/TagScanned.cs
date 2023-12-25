@@ -7,29 +7,50 @@ using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using Microsoft.Azure.WebJobs.Extensions.SignalRService;
 
 namespace Somark
 {
-    public static class TagScanned
+    public static class Functions
     {
-        [FunctionName("TagScanned")]
-        public static async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post", Route = null)] HttpRequest req,
-            ILogger log)
+        [FunctionName("index")]
+        public static IActionResult GetHomePage([HttpTrigger(AuthorizationLevel.Anonymous)] HttpRequest req, ExecutionContext context)
+        {
+            var path = Path.Combine(context.FunctionAppDirectory, "content", "index.html");
+            return new ContentResult
+            {
+                Content = File.ReadAllText(path),
+                ContentType = "text/html",
+            };
+        }
+
+        [FunctionName("negotiate")]
+        public static SignalRConnectionInfo Negotiate(
+            [HttpTrigger(AuthorizationLevel.Anonymous)] HttpRequest req,
+            [SignalRConnectionInfo(HubName = "serverless")] SignalRConnectionInfo connectionInfo)
+        {
+            return connectionInfo;
+        }
+
+        [FunctionName("tag-scanned")]
+        public static async Task<IActionResult> TagScanned([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)] HttpRequest req,
+                                            [SignalR(HubName = "serverless")] IAsyncCollector<SignalRMessage> signalRMessages,
+                                            ILogger log)
         {
             log.LogInformation("C# HTTP trigger function processed a request.");
 
-            string name = req.Query["name"];
-
             string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
             dynamic data = JsonConvert.DeserializeObject(requestBody);
-            name = name ?? data?.name;
+            var tagId = data?.name;
 
-            string responseMessage = string.IsNullOrEmpty(name)
-                ? "This HTTP triggered function executed successfully. Pass a name in the query string or in the request body for a personalized response."
-                : $"Hello, {name}. This HTTP triggered function executed successfully.";
+            await signalRMessages.AddAsync(
+                new SignalRMessage
+                {
+                    Target = "nextTag",
+                    Arguments = new[] { tagId }
+                });
 
-            return new OkObjectResult(responseMessage);
+            return new OkResult();
         }
     }
 }
