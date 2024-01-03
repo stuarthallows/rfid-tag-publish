@@ -35,18 +35,16 @@ namespace Somark
             };
             var request = await JsonSerializer.DeserializeAsync<TagScannedRequest>(req.Body, options);
 
-            using var _ = log.BeginScope("{TagId}", request.TagId);
-            log.LogInformation($"{context.FunctionName} function invoked");
+            log.LogInformation("{FunctionName} function invoked with tag {TagId}", context.FunctionName, request.TagId);
 
             var message = new SignalRMessage
                 {
                     Target = "nextTag",
-                    Arguments = new[] { request.TagId }
+                    Arguments = new object[] { request.TagId }
                 };
             await signalRMessages.AddAsync(message);
 
-            // TODO just return OkResult
-            return new OkObjectResult(new { Message = "Tag scanned", TagId = request.TagId});
+            return new OkResult();
         }
     }
 }

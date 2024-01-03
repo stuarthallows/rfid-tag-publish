@@ -8,6 +8,7 @@
 - Add Application Insights
 - Swap the CRA for a Vite app
 - Remove duplicate App Insights instance from resource group rfid-tag-publish
+- Document local.settings.json
 
 ## Run the frontend and API locally
 
