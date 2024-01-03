@@ -4,14 +4,14 @@ import * as signalR from "@microsoft/signalr";
 export const useSignalRClient = () => {
   var [tagId, setTagId] = React.useState("");
 
-  // const apiBaseUrl = window.location.origin;
-  // apiBaseUrl + '/api'
+  const apiBaseUrl = window.location.origin;
 
-  var connectionUrl = process.env.REACT_APP_SIGNALR_HUB_URL;
+  console.log("apiBaseUrl", apiBaseUrl);
+  // var connectionUrl = process.env.REACT_APP_SIGNALR_HUB_URL;
 
   useEffect(() => {
     const connection = new signalR.HubConnectionBuilder()
-      .withUrl(connectionUrl)
+      .withUrl(apiBaseUrl + '/api')
       .configureLogging(signalR.LogLevel.Information)
       .build();
 
@@ -30,7 +30,7 @@ export const useSignalRClient = () => {
       connection.off("nextTag");
       connection.stop();
     };
-  }, [connectionUrl]);
+  }, [apiBaseUrl]);
 
   return tagId;
 };
