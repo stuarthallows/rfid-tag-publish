@@ -30,7 +30,7 @@ export const useSignalRClient = () => {
       connection.off("nextTag");
       connection.stop();
     };
-  }, []);
+  }, [connectionUrl]);
 
   return tagId;
 };
