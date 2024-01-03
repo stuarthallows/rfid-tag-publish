@@ -2,6 +2,7 @@
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <AzureFunctionsVersion>v4</AzureFunctionsVersion>
+    <UserSecretsId>3f4282f0-5f7a-4a8d-87bb-2a1dfda8b32e</UserSecretsId>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.Azure.WebJobs.Extensions.SignalRService" Version="1.12.0" />
@@ -14,11 +15,6 @@
     <None Update="local.settings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <CopyToPublishDirectory>Never</CopyToPublishDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Update="content/index.html">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
 </Project>

@@ -5,7 +5,6 @@ using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Azure.WebJobs.Extensions.SignalRService;
-using System.Text.Json;
 using Somark.Models;
 
 namespace Somark
@@ -20,22 +19,15 @@ namespace Somark
             return connectionInfo;
         }
 
-        // TODO is there a request type that's strongly typed?
         [FunctionName("tag-scanned")]
         public static async Task<IActionResult> TagScanned(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)] TagScannedRequest request,
             [SignalR(HubName = "serverless")] IAsyncCollector<SignalRMessage> signalRMessages,
             ExecutionContext context,
             ILogger log)
         {
             // TODO add validation for tag format
-            var options = new JsonSerializerOptions
-            {
-                PropertyNamingPolicy = JsonNamingPolicy.CamelCase
-            };
-            var request = await JsonSerializer.DeserializeAsync<TagScannedRequest>(req.Body, options);
-
-            log.LogInformation("{FunctionName} function invoked with tag {TagId}", context.FunctionName, request.TagId);
+            log.LogInformation("{FunctionName} invoked with tag {TagId}", context.FunctionName, request.TagId);
 
             var message = new SignalRMessage
                 {
