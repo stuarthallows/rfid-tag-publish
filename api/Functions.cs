@@ -35,7 +35,7 @@ namespace Somark
             };
             var request = await JsonSerializer.DeserializeAsync<TagScannedRequest>(req.Body, options);
 
-            using var _ = log.BeginScope("TagId", request.TagId);
+            using var _ = log.BeginScope("{TagId}", request.TagId);
             log.LogInformation($"{context.FunctionName} function invoked");
 
             var message = new SignalRMessage
