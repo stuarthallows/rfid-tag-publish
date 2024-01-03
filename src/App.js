@@ -1,10 +1,8 @@
 import React from 'react';
-import { useSignalRClient } from './SignalRClient';
+import { useSignalRClient } from './useSignalRClient';
 
-function App() {
+export function App() {
   var tagId = useSignalRClient();
 
   return <div> Tag Id: {tagId}</div>;
 }
-
-export default App;

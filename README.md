@@ -11,19 +11,19 @@
 ## Run the frontend and API locally
 
 ### Install command line tools
-```bash
+```Shell
 npm install -D @azure/static-web-apps-cli
 ```
 
 ### Build frontend app
-```bash
+```Shell
 npm install
 npm run build
 ```
 
 ### Start the CLI
 Run the frontend app and API together by starting the app with the Static Web Apps CLI.
-```bash
+```Shell
 swa start build --api-location api
 ```
 
@@ -34,10 +34,3 @@ swa start build --api-location api
 4. Add dependency to functions app - Microsoft.Azure.WebJobs.Extensions.SignalRService
 5. Add SignalR connection string to functions app - func settings add AzureSignalRConnectionString "CONN_STR"
 6. Add APPLICATIONINSIGHTS_CONNECTION_STRING setting to functions app
-
-
-
-
-
-
-
