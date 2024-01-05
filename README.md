@@ -18,7 +18,6 @@ npm install -D @azure/static-web-apps-cli
 ```
 
 ### Build frontend app
-Azure build detects Node version *16.20.2*, so use this version when building the app locally. When everything is working look at updating this.
 
 ```Shell
 npm install
@@ -42,3 +41,9 @@ swa start build --api-location api
 ## Azure
 - React app: https://witty-beach-0c176770f.4.azurestaticapps.net/
 - Hub hostname: rfid-tag-publish.service.signalr.net
+- Post tags to: https://witty-beach-0c176770f.4.azurestaticapps.net/api/tag-scanned
+    ```json
+    {
+        "TagId": "ABCD1234"
+    }
+    ```
