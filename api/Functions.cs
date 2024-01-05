@@ -26,7 +26,12 @@ namespace Somark
             ExecutionContext context,
             ILogger log)
         {
-            // TODO add validation for tag format
+            if (!IsValidTag(request.TagId))
+            {
+                log.LogWarning("{FunctionName} invoked with invalid tag {TagId}", context.FunctionName, request.TagId[..100]);
+                return new BadRequestResult();
+            }
+            
             log.LogInformation("{FunctionName} invoked with tag {TagId}", context.FunctionName, request.TagId);
 
             var message = new SignalRMessage
@@ -37,6 +42,11 @@ namespace Somark
             await signalRMessages.AddAsync(message);
 
             return new OkResult();
+        }
+
+        private static bool IsValidTag(string tagId)
+        {
+            return tagId.StartsWith("E28011") && tagId.Length == 24;
         }
     }
 }
