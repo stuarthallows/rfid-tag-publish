@@ -44,6 +44,6 @@ swa start build --api-location api
 - Post tags to: https://witty-beach-0c176770f.4.azurestaticapps.net/api/tag-scanned
     ```json
     {
-        "TagId": "ABCD1234"
+        "TagId": "E28011000000111111222222"
     }
     ```
