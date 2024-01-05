@@ -2,12 +2,19 @@ import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
+import { useSignalRClient } from './useSignalRClient'
 
-function App() {
+export default function App() {
   const [count, setCount] = useState(0)
+  const tagId = useSignalRClient();
 
   return (
     <>
+      <div>
+        <h1>Tag ID: {tagId}</h1>
+      </div>
+
+
       <div>
         <a href="https://vitejs.dev" target="_blank">
           <img src={viteLogo} className="logo" alt="Vite logo" />
@@ -31,5 +38,3 @@ function App() {
     </>
   )
 }
-
-export default App
