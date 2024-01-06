@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
@@ -6,13 +7,21 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Azure.WebJobs.Extensions.SignalRService;
 using System.Text.Json;
+using Microsoft.Extensions.Configuration;
 
 namespace TagPublish;
 
 public record TagRequest(string TagId);
 
-public static class Functions
+public class Functions
 {
+    private readonly IConfiguration _configuration;
+
+    public Functions(IConfiguration configuration)
+    {
+        _configuration = configuration;
+    }
+    
     [FunctionName("negotiate")]
     public static SignalRConnectionInfo Negotiate(
         [HttpTrigger(AuthorizationLevel.Anonymous)] HttpRequest req,
@@ -22,15 +31,22 @@ public static class Functions
     }
 
     [FunctionName("tag-scanned")]
-    public static async Task<IActionResult> TagScanned(
+    public async Task<IActionResult> TagScanned(
         [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = null)] HttpRequest req,
         [SignalR(HubName = "serverless")] IAsyncCollector<SignalRMessage> signalRMessages,
         ExecutionContext context,
         ILogger log)
     {
+        var isAuthenticated = req.Headers["X-Functions-Key"].SingleOrDefault()?.Equals(_configuration["X-Functions-Key"]) ?? false;
+        if (!isAuthenticated)
+        {
+            log.LogWarning("Unauthorised call made to ${FunctionName}", context.FunctionName);
+            return new UnauthorizedResult();
+        }
+                
         var request = await JsonSerializer.DeserializeAsync<TagRequest>(req.Body);
         
-        if (!IsValidTag(request.TagId))
+        if (request.TagId.Length > 40)
         {
             log.LogWarning("{FunctionName} invoked with invalid tag", context.FunctionName);
             return new BadRequestResult();
@@ -46,10 +62,5 @@ public static class Functions
         await signalRMessages.AddAsync(message);
 
         return new OkResult();
-    }
-
-    private static bool IsValidTag(string tagId)
-    {
-        return tagId.StartsWith("E28011") && tagId.Length == 24;
     }
 }
