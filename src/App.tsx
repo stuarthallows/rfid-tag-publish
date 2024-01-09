@@ -4,7 +4,7 @@ import { useScannedTag } from './useScannedTag'
 import { formatDistanceToNow } from 'date-fns';
 
 export default function App() {
-  const tagId = useScannedTag();
+  const tagId = "E28011000000111131222222";
   
   const [tagIdUpdatedAt, setTagIdUpdatedAt] = useState(Date.now());
   useEffect(() => {
@@ -25,8 +25,8 @@ export default function App() {
 
   return (
     <div>
-      <h1>Tag Id: {tagId}</h1>
-      {tagId && <h2>Updated {timeSinceLastUpdated}</h2>}
+      <div className="tagId">{tagId}</div>
+      {tagId && <div className="tagAge">Updated {timeSinceLastUpdated}</div>}
     </div>
   )
 }
