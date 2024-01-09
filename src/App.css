@@ -5,12 +5,6 @@
   text-align: center;
 }
 
-.tagId {
-  font-family: monospace;
-  font-size: 2rem;
-  margin-bottom: 1rem;
-}
-
 .tagAge {
   color: grey;
   font-weight: light;

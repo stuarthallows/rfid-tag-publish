@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react';
-import './App.css'
-import { useScannedTag } from './useScannedTag'
 import { formatDistanceToNow } from 'date-fns';
+import { useScannedTag } from './useScannedTag';
+import { TagId } from './TagId';
+import './App.css';
 
 export default function App() {
-  const tagId = "E28011000000111131222222";
+  const tagId = useScannedTag();
   
   const [tagIdUpdatedAt, setTagIdUpdatedAt] = useState(Date.now());
   useEffect(() => {
@@ -23,9 +24,13 @@ export default function App() {
     };
   }, [tagIdUpdatedAt]);
 
+  if(!tagId) {
+    return <div className="tagId">No tag scanned</div>;
+  }
+
   return (
     <div>
-      <div className="tagId">{tagId}</div>
+      <TagId value={tagId}/>
       {tagId && <div className="tagAge">Updated {timeSinceLastUpdated}</div>}
     </div>
   )
