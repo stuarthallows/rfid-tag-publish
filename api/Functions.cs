@@ -37,10 +37,9 @@ public class Functions
         ExecutionContext context,
         ILogger log)
     {
-        var isAuthenticated = req.Headers["X-Functions-Key"].SingleOrDefault()?.Equals(_configuration["X-Functions-Key"]) ?? false;
-        if (!isAuthenticated)
+        if (!IsAuthenticated(req))
         {
-            log.LogWarning("Unauthorised call made to ${FunctionName}", context.FunctionName);
+            log.LogWarning("Unauthorized call made to ${FunctionName}", context.FunctionName);
             return new UnauthorizedResult();
         }
                 
@@ -62,5 +61,11 @@ public class Functions
         await signalRMessages.AddAsync(message);
 
         return new OkResult();
+    }
+
+    private bool IsAuthenticated(HttpRequest req)
+    {
+        return !string.IsNullOrEmpty(_configuration["XFunctionsKey"]) &&
+             (req.Headers["XFunctionsKey"].SingleOrDefault()?.Equals(_configuration["XFunctionsKey"]) ?? false);
     }
 }
