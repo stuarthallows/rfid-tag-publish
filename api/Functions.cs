@@ -65,7 +65,7 @@ public class Functions
 
     private bool IsAuthenticated(HttpRequest req)
     {
-        return !string.IsNullOrEmpty(_configuration["XFunctionsKey"]) &&
-             (req.Headers["XFunctionsKey"].SingleOrDefault()?.Equals(_configuration["XFunctionsKey"]) ?? false);
+        return !string.IsNullOrEmpty(_configuration["XLinkToAuth"]) &&
+             (req.Headers["X-LinkTo-Auth"].SingleOrDefault()?.Equals(_configuration["XLinkToAuth"]) ?? false);
     }
 }

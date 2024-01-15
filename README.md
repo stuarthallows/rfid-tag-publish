@@ -3,11 +3,6 @@
 - [Azure Static Web Apps documentation](https://learn.microsoft.com/en-us/azure/static-web-apps/)
 - [Static Web Apps CLI](https://azure.github.io/static-web-apps-cli/)
 
-## TODO
-- Document local.settings.json
-- Why does the client app in Azure not reflect the latest code?
-- Update LinkTo to call API
-
 ## Run the frontend and API locally
 
 ### Install command line tools
@@ -35,7 +30,21 @@ swa start build --api-location api
 4. Add dependency to functions app - Microsoft.Azure.WebJobs.Extensions.SignalRService
 5. Add SignalR connection string to functions app - func settings add AzureSignalRConnectionString "CONN_STR"
 6. Add APPLICATIONINSIGHTS_CONNECTION_STRING setting to functions app
-7. Add X-Functions-Key environment variable in Azure to secure the API
+7. Add XLinkToAuth environment variable in Azure to secure the API
+
+For development add file `api/local.settings.json`, not committed to source control.
+
+```json
+{
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "",
+    "FUNCTIONS_WORKER_RUNTIME": "dotnet",
+    "AzureSignalRConnectionString": "<Connection string from Azure SignalR service>"
+  },
+  "ConnectionStrings": {}
+}
+```
 
 ## Azure
 - React app: https://witty-beach-0c176770f.4.azurestaticapps.net/
@@ -43,6 +52,6 @@ swa start build --api-location api
 - Post tags to: https://witty-beach-0c176770f.4.azurestaticapps.net/api/tag-scanned
     ```json
     {
-        "TagId": "E28011000000111111222222"
+        "TagId": "E2801190200072BB20330632"
     }
     ```

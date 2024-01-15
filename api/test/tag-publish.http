@@ -1,0 +1,9 @@
+POST https://witty-beach-0c176770f.4.azurestaticapps.net/api/tag-scanned
+Content-Type: application/json
+X-LinkTo-Auth: ADD_AUTH_KEY_HERE
+
+{
+    "TagId": "E2801190200072BB20330632"
+}
+
+###
